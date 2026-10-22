@@ -1,0 +1,189 @@
+
+=== ESQUEMA ===
+root
+ |-- Invoice: string (nullable = true)
+ |-- StockCode: string (nullable = true)
+ |-- Description: string (nullable = true)
+ |-- Quantity: integer (nullable = true)
+ |-- InvoiceDate: timestamp (nullable = true)
+ |-- Price: double (nullable = true)
+ |-- CustomerID: integer (nullable = true)
+ |-- Country: string (nullable = true)
+
+=== NULOS POR COLUMNA (ANTES DE LIMPIAR) ===
++-------+---------+-----------+--------+-----------+-----+----------+-------+
+|Invoice|StockCode|Description|Quantity|InvoiceDate|Price|CustomerID|Country|
++-------+---------+-----------+--------+-----------+-----+----------+-------+
+|0      |0        |4382       |0       |0          |0    |243007    |0      |
++-------+---------+-----------+--------+-----------+-----+----------+-------+
+
+
+=== RESUMEN DE LIMPIEZA ===
+Filas iniciales (2 CSV):                1,067,371
+Tras quitar duplicados exactos:         1,033,036  (-34,335)
+Cancelaciones separadas:                   19,104
+Ventas sin cancelaciones:               1,013,932
+Tras exigir Quantity>0 y Price>0:       1,007,913  (-6,019)
+Tras quitar códigos no producto:        1,003,340  (-4,573)
+
+=== NULOS POR COLUMNA (DESPUÉS DE LIMPIAR) ===
++-------+---------+-----------+--------+-----------+-----+----------+-------+
+|Invoice|StockCode|Description|Quantity|InvoiceDate|Price|CustomerID|Country|
++-------+---------+-----------+--------+-----------+-----+----------+-------+
+|0      |0        |0          |0       |0          |0    |226761    |0      |
++-------+---------+-----------+--------+-----------+-----+----------+-------+
+
+
+=== INDICADORES GENERALES (GBP) ===
+Ingresos totales:             19,643,861.62
+Facturas distintas:                  39,516
+Ticket promedio por factura:         497.11
+Productos distintos:                  4,724
+Clientes identificados:               5,852
+Países:                                  43
+
+=== ANÁLISIS 1A: TOP 10 PRODUCTOS POR INGRESOS BRUTOS ===
++---------+--------+---------+----------------------------------+
+|StockCode|Unidades|Ingresos |Descripcion                       |
++---------+--------+---------+----------------------------------+
+|22423    |26478   |330590.32|REGENCY CAKESTAND 3 TIER          |
+|85123A   |94719   |261168.73|WHITE HANGING HEART T-LIGHT HOLDER|
+|85099B   |97176   |182680.98|RED RETROSPOT JUMBO BAG           |
+|23843    |80995   |168469.60|PAPER CRAFT , LITTLE BIRDIE       |
+|47566    |28200   |148318.28|PARTY BUNTING                     |
+|84879    |80082   |129324.49|ASSORTED COLOUR BIRD ORNAMENT     |
+|22086    |35084   |117760.29|PAPER CHAIN KIT 50'S CHRISTMAS    |
+|23166    |78033   |81700.92 |MEDIUM CERAMIC TOP STORAGE JAR    |
+|79321    |15841   |80540.88 |CHILLI LIGHTS                     |
+|22197    |88499   |79520.20 |SMALL POPCORN HOLDER              |
++---------+--------+---------+----------------------------------+
+
+=== ANÁLISIS 1B: TOP 5 PRODUCTOS POR UNIDADES VENDIDAS ===
++---------+--------+---------+----------------------------------+
+|StockCode|Unidades|Ingresos |Descripcion                       |
++---------+--------+---------+----------------------------------+
+|84077    |106139  |24445.61 |WORLD WAR 2 GLIDERS ASSTD DESIGNS |
+|85099B   |97176   |182680.98|RED RETROSPOT JUMBO BAG           |
+|21212    |94884   |51825.15 |PACK OF 72 RETROSPOT CAKE CASES   |
+|85123A   |94719   |261168.73|WHITE HANGING HEART T-LIGHT HOLDER|
+|22197    |88499   |79520.20 |SMALL POPCORN HOLDER              |
++---------+--------+---------+----------------------------------+
+
+=== ANÁLISIS 2A: TOP 10 PAÍSES POR INGRESOS ===
++--------------+--------+-----------+----------+
+|Country       |Facturas|Ingresos   |Porcentaje|
++--------------+--------+-----------+----------+
+|United Kingdom|36184   |16801019.37|85.53     |
+|EIRE          |581     |623414.16  |3.17      |
+|Netherlands   |216     |549773.41  |2.8       |
+|Germany       |753     |383289.00  |1.95      |
+|France        |598     |311090.29  |1.58      |
+|Australia     |89      |167800.01  |0.85      |
+|Spain         |144     |97766.75   |0.5       |
+|Switzerland   |85      |94024.59   |0.48      |
+|Sweden        |99      |86319.14   |0.44      |
+|Denmark       |42      |67422.69   |0.34      |
++--------------+--------+-----------+----------+
+only showing top 10 rows
+
+=== ANÁLISIS 2B: TOP 10 PAÍSES SIN REINO UNIDO ===
++-----------+--------+---------+----------+
+|Country    |Facturas|Ingresos |Porcentaje|
++-----------+--------+---------+----------+
+|EIRE       |581     |623414.16|21.93     |
+|Netherlands|216     |549773.41|19.34     |
+|Germany    |753     |383289.00|13.48     |
+|France     |598     |311090.29|10.94     |
+|Australia  |89      |167800.01|5.9       |
+|Spain      |144     |97766.75 |3.44      |
+|Switzerland|85      |94024.59 |3.31      |
+|Sweden     |99      |86319.14 |3.04      |
+|Denmark    |42      |67422.69 |2.37      |
+|Belgium    |143     |56993.17 |2.0       |
++-----------+--------+---------+----------+
+only showing top 10 rows
+
+=== ANÁLISIS 3: TENDENCIA MENSUAL DE VENTAS ===
++---------+--------+----------+
+|YearMonth|Facturas|Ingresos  |
++---------+--------+----------+
+|2009-12  |1666    |797901.16 |
+|2010-01  |1049    |612297.42 |
+|2010-02  |1189    |537909.67 |
+|2010-03  |1647    |761705.98 |
+|2010-04  |1435    |646340.93 |
+|2010-05  |1484    |643492.03 |
+|2010-06  |1612    |696583.19 |
+|2010-07  |1507    |632994.32 |
+|2010-08  |1402    |674037.72 |
+|2010-09  |1789    |869243.12 |
+|2010-10  |2244    |1094435.98|
+|2010-11  |2719    |1429700.78|
+|2010-12  |1550    |775638.36 |
+|2011-01  |1081    |670380.24 |
+|2011-02  |1093    |507799.87 |
+|2011-03  |1440    |689833.51 |
+|2011-04  |1235    |515377.99 |
+|2011-05  |1668    |739953.00 |
+|2011-06  |1525    |737558.98 |
+|2011-07  |1452    |688219.34 |
+|2011-08  |1339    |724216.50 |
+|2011-09  |1818    |1028320.38|
+|2011-10  |2005    |1103314.25|
+|2011-11  |2751    |1452115.98|
+|2011-12  |816     |614490.92 |
++---------+--------+----------+
+
+=== ANÁLISIS 4A: TOP 10 CLIENTES POR FRECUENCIA DE COMPRA ===
++----------+--------+---------+--------------+
+|CustomerID|Facturas|Ingresos |Pais          |
++----------+--------+---------+--------------+
+|14911     |373     |272252.79|EIRE          |
+|12748     |322     |49176.74 |United Kingdom|
+|17841     |211     |68519.95 |United Kingdom|
+|15311     |207     |114671.42|United Kingdom|
+|13089     |203     |113416.91|United Kingdom|
+|14606     |184     |29648.75 |United Kingdom|
+|17850     |155     |51208.87 |United Kingdom|
+|18102     |145     |580987.04|United Kingdom|
+|14646     |145     |526751.52|Netherlands   |
+|14156     |144     |303069.88|EIRE          |
++----------+--------+---------+--------------+
+
+Clientes con una sola factura: 1,618 de 5,852 (27.6%)
+
+=== ANÁLISIS 5A: CANCELACIONES (GBP) ===
+Facturas de cancelación:                    7,405
+Unidades devueltas:                       467,739
+Valor devuelto:                        716,425.97
+Valor devuelto sobre ingresos:              3.65%
+Cancelaciones por cada 100 ventas:          18.74
+
+=== ANÁLISIS 5B: TOP 5 PRODUCTOS MÁS DEVUELTOS ===
++---------+--------+----------+-----------------------------------+
+|StockCode|Unidades|Valor     |Descripcion                        |
++---------+--------+----------+-----------------------------------+
+|23843    |-80995  |-168469.60|PAPER CRAFT , LITTLE BIRDIE        |
+|23166    |-74494  |-77479.64 |MEDIUM CERAMIC TOP STORAGE JAR     |
+|84347    |-9381   |-330.45   |ROTATING SILVER ANGELS T-LIGHT HLDR|
+|21088    |-7140   |-572.52   |SET/6 FRUIT SALAD PAPER CUPS       |
+|21096    |-7008   |-911.04   |SET/6 FRUIT SALAD  PAPER PLATES    |
++---------+--------+----------+-----------------------------------+
+
+=== ANÁLISIS 1C: TOP 10 PRODUCTOS POR INGRESOS NETOS (VENTAS - DEVOLUCIONES) ===
++---------+-------------+-----------------------------------+
+|StockCode|IngresosNetos|Descripcion                        |
++---------+-------------+-----------------------------------+
+|22423    |314045.02    |REGENCY CAKESTAND 3 TIER           |
+|85123A   |251781.63    |WHITE HANGING HEART T-LIGHT HOLDER |
+|85099B   |180512.16    |RED RETROSPOT JUMBO BAG            |
+|47566    |147079.73    |PARTY BUNTING                      |
+|84879    |128550.42    |ASSORTED COLOUR BIRD ORNAMENT      |
+|22086    |116298.59    |PAPER CHAIN KIT 50'S CHRISTMAS     |
+|79321    |79905.13     |CHILLI LIGHTS                      |
+|22197    |78903.62     |SMALL POPCORN HOLDER               |
+|22386    |75457.64     |JUMBO BAG PINK WITH WHITE SPOTS    |
+|84347    |70969.95     |ROTATING SILVER ANGELS T-LIGHT HLDR|
++---------+-------------+-----------------------------------+
+
+Ingresos netos totales: 18,927,435.65

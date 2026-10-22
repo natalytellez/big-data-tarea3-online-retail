@@ -1,0 +1,36 @@
+
+=== RESUMEN DE LIMPIEZA ===
+Filas iniciales (2 CSV):                1,067,371
+Tras quitar duplicados exactos:         1,033,036  (-34,335)
+Cancelaciones separadas:                   19,104
+Ventas sin cancelaciones:               1,013,932
+Tras exigir Quantity>0 y Price>0:       1,007,913  (-6,019)
+Tras quitar códigos no producto:        1,003,340  (-4,573)
+
+=== RDD 1: INGRESOS POR PAÍS (map + reduceByKey) ===
+Países (count):          43
+Top 5 (sortBy + take):
+  United Kingdom   16,801,019.37
+  EIRE                623,414.16
+  Netherlands         549,773.41
+  Germany             383,289.00
+  France              311,090.29
+Ingreso total (reduce):  19,643,861.62
+
+=== RDD 2: SIN REINO UNIDO (filter) ===
+Países (count):          42
+Ingreso total (reduce):  2,842,842.25
+
+=== RDD 3: PALABRAS MÁS FRECUENTES EN NOMBRES DE PRODUCTO (flatMap) ===
+  HEART         73,725
+  PINK          60,760
+  RETROSPOT     55,265
+  VINTAGE       53,311
+  DESIGN        51,489
+  WHITE         45,771
+  CAKE          43,504
+  METAL         43,161
+  CHRISTMAS     41,917
+  BLUE          38,343
+
+Gráficas guardadas en la carpeta 'graficas/'
